@@ -1,5 +1,7 @@
+import axios from 'axios'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import cmsConfig from '../.cms.config.json'
 
 export default function Home() {
   return (
@@ -62,4 +64,17 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export const getStaticProps = async() => {
+  const key = {
+    headers: { 'X-API-KEY':  cmsConfig.get_api_key },
+  }
+  const res = await axios.get('https://yamam00s-info.microcms.io/api/v1/career', key)
+  console.log(res.data)
+  return {
+    props: {
+      res
+    }
+  }
 }
