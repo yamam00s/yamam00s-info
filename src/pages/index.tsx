@@ -1,3 +1,4 @@
+import { GetStaticProps } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
@@ -66,7 +67,7 @@ export default function Home() {
   )
 }
 
-export const getStaticProps = async() => {
+export async function getStaticProps(): GetStaticProps {
   const key = {
     headers: { 'X-API-KEY':  cmsConfig.get_api_key },
   }
