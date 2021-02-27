@@ -1,10 +1,14 @@
+import React, { FC, useState } from 'react'
 import { GetStaticProps } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import cmsConfig from '../.cms.config.json'
+import CareerContainer from 'containers/Career'
+import { Career } from 'services/models/career'
 
-export default function Home() {
+const Home: FC<{ career: Career }> = ({ career }) => {
+  console.log(career)
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +25,7 @@ export default function Home() {
           ページサブイトル
         </p>
 
-        <div className={styles.grid}></div>
+        <CareerContainer career={career} />
       </main>
 
       <footer className={styles.footer}>
@@ -37,6 +41,10 @@ export const getStaticProps: GetStaticProps = async (ctx) =>{
   }
   const res = await axios.get('https://yamam00s-info.microcms.io/api/v1/career', key)
   return {
-    props: res.data
+    props: {
+      career: res.data.contents[0]
+    }
   }
 }
+
+export default Home
