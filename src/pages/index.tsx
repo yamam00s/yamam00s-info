@@ -7,8 +7,7 @@ import cmsConfig from '../.cms.config.json'
 import CareerContainer from 'containers/Career'
 import { Career } from 'services/models/career'
 
-const Home: FC<{ career: Career }> = ({ career }) => {
-  console.log(career)
+const Home: FC<{ careers: Career[] }> = ({ careers }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -25,7 +24,9 @@ const Home: FC<{ career: Career }> = ({ career }) => {
           ページサブイトル
         </p>
 
-        <CareerContainer career={career} />
+        {careers.map(career => (
+          <CareerContainer key={career.id} career={career} />
+        ))}
       </main>
 
       <footer className={styles.footer}>
@@ -39,10 +40,11 @@ export const getStaticProps: GetStaticProps = async (ctx) =>{
   const key = {
     headers: { 'X-API-KEY':  cmsConfig.get_api_key },
   }
-  const res = await axios.get('https://yamam00s-info.microcms.io/api/v1/career', key)
+  const { data } = await axios.get('https://yamam00s-info.microcms.io/api/v1/career', key)
+  console.log(data)
   return {
     props: {
-      career: res.data.contents[0]
+      careers: data.contents
     }
   }
 }
